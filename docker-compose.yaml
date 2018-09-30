@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  drone-server:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    image: drone-server:latest
+    ports:
+      - 8080:8000
+      - 9000:9000
+    environment:
+      - DRONE_HOST=http://drone-server
+      - DRONE_OPEN=false
+      - DRONE_SECRET=test
+      - DRONE_ADMIN=pi
+
+  drone-agent:
+    build:
+      context: ./agent/
+      dockerfile: Dockerfile
+    image: drone-agent:latest
+    environment:
+      - DRONE_SERVER=drone-server:9000
+      - DRONE_SECRET=test
+      - DRONE_MAX_PROCS=3
