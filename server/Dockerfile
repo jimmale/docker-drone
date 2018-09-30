@@ -22,6 +22,8 @@ ENV DATABASE_CONFIG=/var/lib/drone/drone.sqlite
 # ENV GODEBUG=netdns=go
 # ENV XDG_CACHE_HOME=/var/lib/drone
 
+RUN apk update && apk upgrade && rm -fr /var/cache/apk/*
+
 COPY --from=builder /go/bin/drone-server /bin/drone-server
 RUN mkdir -p /var/lib/drone/
 ENTRYPOINT ["/bin/drone-server"]

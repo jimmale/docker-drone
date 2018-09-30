@@ -17,6 +17,8 @@ RUN upx -9 /go/bin/drone-agent
 FROM alpine:latest
 EXPOSE 8000 9000 80 443
 
+RUN apk update && apk upgrade && rm -fr /var/cache/apk/*
+
 COPY --from=builder /go/bin/drone-agent /bin/drone-agent
 
 ENTRYPOINT ["/bin/drone-agent"]
