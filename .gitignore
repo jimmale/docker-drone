@@ -1,1 +1,1 @@
-drone_secret.env
+*.secret

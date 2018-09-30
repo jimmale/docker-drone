@@ -10,11 +10,19 @@ services:
       - 8080:8000
       - 9000:9000
     environment:
+      # - GIN_MODE=release
       - DRONE_HOST=http://drone-server
-      - DRONE_OPEN=false
+      - DRONE_OPEN=true
       - DRONE_ADMIN=pi
+      # github config options
+      - DRONE_GITHUB=true
+      - DRONE_GITHUB_URL=https://github.com
+      # these are defined in ./github.secret
+      # - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
+      # - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
     env_file:
-      - ./drone_secret.env
+      - ./drone_secret.secret
+      - ./github.secret
 
   drone-agent:
     build:
@@ -22,7 +30,12 @@ services:
       dockerfile: Dockerfile
     image: drone-agent:latest
     environment:
+      # - GIN_MODE=release
       - DRONE_SERVER=drone-server:9000
       - DRONE_MAX_PROCS=3
     env_file:
-      - ./drone_secret.env
+      - ./drone_secret.secret
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - drone-server
