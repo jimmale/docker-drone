@@ -12,8 +12,9 @@ services:
     environment:
       - DRONE_HOST=http://drone-server
       - DRONE_OPEN=false
-      - DRONE_SECRET=test
       - DRONE_ADMIN=pi
+    env_file:
+      - ./drone_secret.env
 
   drone-agent:
     build:
@@ -22,5 +23,6 @@ services:
     image: drone-agent:latest
     environment:
       - DRONE_SERVER=drone-server:9000
-      - DRONE_SECRET=test
       - DRONE_MAX_PROCS=3
+    env_file:
+      - ./drone_secret.env
